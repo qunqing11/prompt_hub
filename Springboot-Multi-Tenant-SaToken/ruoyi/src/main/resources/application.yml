@@ -1,0 +1,17 @@
+gemini:
+  api-key: ${GEMINI_API_KEY:}
+  base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com}
+  model: ${GEMINI_MODEL:gemini-1.5-flash-latest}
+  proxy:
+    enabled: ${GEMINI_PROXY_ENABLED:false}
+    host: ${GEMINI_PROXY_HOST:127.0.0.1}
+    port: ${GEMINI_PROXY_PORT:7890}
+    fallback-ports: ${GEMINI_PROXY_FALLBACK_PORTS:7897,10809,1080}
+  timeout:
+    connect-ms: ${GEMINI_TIMEOUT_CONNECT_MS:20000}
+    read-ms: ${GEMINI_TIMEOUT_READ_MS:120000}
+
+spring:
+  autoconfigure:
+    exclude:
+      - io.github.pigmesh.ai.deepseek.config.DeepSeekAutoConfiguration

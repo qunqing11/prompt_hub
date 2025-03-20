@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prompt.project.system.mapper.SysPromptTemplateMapper">
+
+    <resultMap type="SysPromptTemplate" id="SysPromptTemplateResult">
+        <result property="id" column="id" />
+        <result property="comId" column="com_id" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="price" column="price" />
+        <result property="status" column="status" />
+        <result property="createBy" column="create_by" />
+        <result property="createTime" column="create_time" />
+        <result property="updateBy" column="update_by" />
+        <result property="updateTime" column="update_time" />
+        <result property="remark" column="remark" />
+    </resultMap>
+
+    <sql id="selectSysPromptTemplateVo">
+        select id, com_id, title, content, price, status, create_by, create_time, update_by, update_time, remark
+        from prompt_template
+    </sql>
+
+    <select id="selectSysPromptTemplateList" parameterType="SysPromptTemplate" resultMap="SysPromptTemplateResult">
+        <include refid="selectSysPromptTemplateVo" />
+        <where>
+            and com_id = #{comId}
+            <if test="title != null and title != ''">
+                and title like concat('%', #{title}, '%')
+            </if>
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectSysPromptTemplateById" resultMap="SysPromptTemplateResult">
+        <include refid="selectSysPromptTemplateVo" />
+        where id = #{id}
+        and com_id = #{comId}
+    </select>
+
+    <insert id="insertSysPromptTemplate" parameterType="SysPromptTemplate">
+        insert into prompt_template
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            com_id,
+            <if test="title != null and title != ''">title,</if>
+            <if test="content != null">content,</if>
+            <if test="price != null">price,</if>
+            <if test="status != null and status != ''">status,</if>
+            <if test="createBy != null and createBy != ''">create_by,</if>
+            <if test="remark != null">remark,</if>
+            create_time
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            #{comId},
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="content != null">#{content},</if>
+            <if test="price != null">#{price},</if>
+            <if test="status != null and status != ''">#{status},</if>
+            <if test="createBy != null and createBy != ''">#{createBy},</if>
+            <if test="remark != null">#{remark},</if>
+            sysdate()
+        </trim>
+    </insert>
+
+    <update id="updateSysPromptTemplate" parameterType="SysPromptTemplate">
+        update prompt_template
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="content != null">content = #{content},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="status != null and status != ''">status = #{status},</if>
+            <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            update_time = sysdate()
+        </trim>
+        where id = #{id}
+        and com_id = #{comId}
+    </update>
+
+    <delete id="deleteSysPromptTemplateById">
+        delete from prompt_template where id = #{id}
+        and com_id = #{comId}
+    </delete>
+
+    <delete id="deleteSysPromptTemplateByIds">
+        delete from prompt_template where id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+        and com_id = #{comId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.prompt.project.system.mapper.SysTenantBalanceMapper">
+
+    <resultMap type="SysTenantBalance" id="SysTenantBalanceResult">
+        <id property="tenantId" column="com_id" />
+        <result property="balance" column="balance" />
+        <result property="version" column="version" />
+        <result property="updateTime" column="update_time" />
+    </resultMap>
+
+    <sql id="selectTenantBalanceVo">
+        select com_id, balance, version, update_time
+        from tenant_balance
+    </sql>
+
+    <select id="selectByTenantId" resultMap="SysTenantBalanceResult">
+        <include refid="selectTenantBalanceVo" />
+        where com_id = #{tenantId}
+    </select>
+
+    <insert id="insertTenantBalance" parameterType="SysTenantBalance">
+        insert into tenant_balance(com_id, balance, version, update_time)
+        values (#{tenantId}, #{balance}, #{version}, sysdate())
+    </insert>
+
+    <update id="deductBalance">
+        update tenant_balance
+        set balance = balance - #{amount},
+            version = version + 1,
+            update_time = sysdate()
+        where com_id = #{tenantId}
+          and version = #{version}
+          and balance &gt;= #{amount}
+    </update>
+
+</mapper>
+

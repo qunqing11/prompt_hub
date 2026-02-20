@@ -1,0 +1,17 @@
+gemini:
+  api-key: AIzaSyDK9gStU0x8zAnkkspeg9A8gmNNOY2wZgE
+  base-url: https://generativelanguage.googleapis.com
+  model: gemini-1.5-flash-latest
+  proxy:
+    enabled: true
+    host: 127.0.0.1
+    port: 7890
+    fallback-ports: 7897,10809,1080
+  timeout:
+    connect-ms: 20000
+    read-ms: 120000
+
+spring:
+  autoconfigure:
+    exclude:
+      - io.github.pigmesh.ai.deepseek.config.DeepSeekAutoConfiguration

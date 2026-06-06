@@ -3,6 +3,7 @@ package com.prompt.project.system.controller;
 import com.prompt.common.exception.CustomException;
 import com.prompt.common.utils.SecurityUtils;
 import com.prompt.common.utils.StringUtils;
+import com.prompt.framework.aspectj.lang.annotation.TenantRateLimiter;
 import com.prompt.framework.web.domain.AjaxResult;
 import com.prompt.project.system.domain.SysPromptTemplate;
 import com.prompt.project.system.domain.SysTenantBalance;
@@ -37,6 +38,7 @@ public class PromptRunController
     @Autowired
     private IPromptAiService promptAiService;
 
+    @TenantRateLimiter(window = 60, limit = 100, key = "prompt:run")
     @PostMapping("/run")
     public AjaxResult run(@Validated @RequestBody PromptRunRequest request)
     {
@@ -52,6 +54,7 @@ public class PromptRunController
         return AjaxResult.success(result, buildAndSaveRunResult(comId, price, result));
     }
 
+    @TenantRateLimiter(window = 60, limit = 60, key = "prompt:run:stream")
     @PostMapping(value = "/run/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter runStream(@Validated @RequestBody PromptRunRequest request)
     {

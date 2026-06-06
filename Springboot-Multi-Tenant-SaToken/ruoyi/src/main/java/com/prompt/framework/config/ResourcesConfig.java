@@ -7,6 +7,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.prompt.common.constant.Constants;
 import com.prompt.framework.interceptor.RepeatSubmitInterceptor;
+import com.prompt.framework.interceptor.TenantDataSourceInterceptor;
 
 /**
  * 通用配置
@@ -18,6 +19,9 @@ public class ResourcesConfig implements WebMvcConfigurer
 {
     @Autowired
     private RepeatSubmitInterceptor repeatSubmitInterceptor;
+
+    @Autowired
+    private TenantDataSourceInterceptor tenantDataSourceInterceptor;
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry)
@@ -36,6 +40,7 @@ public class ResourcesConfig implements WebMvcConfigurer
     @Override
     public void addInterceptors(InterceptorRegistry registry)
     {
+        registry.addInterceptor(tenantDataSourceInterceptor).addPathPatterns("/**").order(0);
         registry.addInterceptor(repeatSubmitInterceptor).addPathPatterns("/**");
     }
 }

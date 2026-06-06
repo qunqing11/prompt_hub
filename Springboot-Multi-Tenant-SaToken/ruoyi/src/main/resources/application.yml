@@ -1,15 +1,15 @@
 gemini:
-  api-key: AIzaSyDK9gStU0x8zAnkkspeg9A8gmNNOY2wZgE
-  base-url: https://generativelanguage.googleapis.com
-  model: gemini-1.5-flash-latest
+  api-key: ${GEMINI_API_KEY:}
+  base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com}
+  model: ${GEMINI_MODEL:gemini-1.5-flash-latest}
   proxy:
-    enabled: true
-    host: 127.0.0.1
-    port: 7890
-    fallback-ports: 7897,10809,1080
+    enabled: ${GEMINI_PROXY_ENABLED:false}
+    host: ${GEMINI_PROXY_HOST:127.0.0.1}
+    port: ${GEMINI_PROXY_PORT:7890}
+    fallback-ports: ${GEMINI_PROXY_FALLBACK_PORTS:7897,10809,1080}
   timeout:
-    connect-ms: 20000
-    read-ms: 120000
+    connect-ms: ${GEMINI_TIMEOUT_CONNECT_MS:20000}
+    read-ms: ${GEMINI_TIMEOUT_READ_MS:120000}
 
 spring:
   autoconfigure:
